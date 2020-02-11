@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<title>Vue.js フルーツ一覧</title>
+<script src="https://unpkg.com/vue@2.5.17"></script>
+
+<main id="main">
+  <fruits-list-title></fruits-list-title>
+  <fruits-list-description></fruits-list-description>
+  <fruits-list-table></fruits-list-table>
+</main>
+
+<script>
+  var fruitsListTitle = Vue.extend({
+    template: '<h1>フルーツ一覧</h1>',
+    data: function () {
+      return {
+        fruits: ['りんご', 'みかん']
+      }
+    }
+  })
+
+var fruitsList = Vue.extend({
+  template: '<div><fruits-list-title></fruits-list-title></div>'
+})
+
+var fruitsListDescription = Vue.extend({
+  template: '<p>季節の代表的なフルーツの一覧です</p>'
+})
+
+var fruitsListTable = Vue.extend({
+  template: `
+  <table>
+  <tr>
+  <th>季節</th>
+  <th>フルーツ</th>
+  </tr>
+  <tr>
+  <td>春</td>
+  <td>いちご</td>
+  </tr>
+  <tr>
+  <td>夏</td>
+  <td>スイカ</td>
+  </tr>
+  <tr>
+  <td>秋</td>
+  <td>ぶどう</td>
+  </tr>
+  <tr>
+  <td>冬</td>
+  <td>みかん</td>
+  </tr>
+  </table>
+  `
+})
+
+var vm = new Vue({
+  el: '#main',
+  components: {
+    'fruits-list-title': fruitsListTitle,
+    'fruits-list': fruitsList,
+    'fruits-list-description': fruitsListDescription,
+    'fruits-list-table': fruitsListTable
+  }
+})
+</script>
