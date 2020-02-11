@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<title>Vue.js の算出プロパティのキャッシュ機構</title>
+<script src="https://unpkg.com/vue@2.5.17"></script>
+
+<div id="app">
+  <p>{{ message }}</p>
+</div>
+
+<script>
+  var vm = new Vue({
+    el: '#app',
+    data: {
+      messagePrefix: 'Hello'
+    },
+    // NOTE: vm.message : メモ化され日付時刻の変更は反映されない。
+    // なんらか構成要素(messagePrefix)が外部から変更されると再生成される。
+    computed: {
+      message: function () {
+        var timestamp = Date.now()
+        return this.messagePrefix + ', ' + timestamp
+      }
+    }
+  })
+</script>

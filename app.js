@@ -29,6 +29,15 @@ var vm = new Vue({
       return value.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1,')
     }
   },
+  methods: {
+    doBuy: function () {
+      // 本来はここで、サーバーと通信を行う
+      alert(this.totalPriceWithTax + '円のお買い上げ!')
+      this.items.forEach(function (item) {
+        item.quantity = 0
+      })
+    }
+  },
   computed: {
     totalPrice: function () {
       return this.items.reduce(function (sum, item) {
@@ -42,6 +51,7 @@ var vm = new Vue({
       return this.totalPrice >= 1000
     },
     errorMessageStyle: function () {
+      // canBuy が偽の時に赤く表示する
       return {
         border: this.canBuy ? '' : '1px solid red',
         color: this.canBuy ? '' : 'red'
