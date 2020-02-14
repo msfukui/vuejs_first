@@ -8,11 +8,38 @@
     <div id="app">
       <router-link to="/top">トップページ</router-link>
       <router-link to="/users">ユーザー一覧ページ</router-link>
+      <router-link to="/users?redirect=true">ユーザー一覧ページ（リダイレクト）</router-link>
+      <router-link :to="{ name: 'user', params: { userId: 'サンプル' }}">ユーザー「サンプル」</router-link>
       <router-view></router-view>
     </div>
     <script src="https://unpkg.com/vue@2.5.17"></script>
     <script src="https://unpkg.com/vue-router@3.0.1"></script>
     <script>
+      var UserList = {
+        template: '<div>ユーザー一覧ページです。</div>',
+        data: function () {
+          return {
+            users: function () { return [] },
+            error: null
+          }
+        },
+        //beforeRouteEnter: function (to, from, next) {
+        //  getUsers((function (err, users) {
+        //    if (err) {
+        //      this.error = err.toString()
+        //    } else {
+        //      next(function (vm) {
+        //        vm.users = users
+        //      })
+        //    }
+        //  }).bind(this))
+        //},
+        beforeRouteLeave: function (to, from, next) {
+          alert(to.path + ' に移動します')
+          next()
+        }
+      }
+
       var router = new VueRouter({
         routes: [
           {
@@ -23,12 +50,35 @@
           },
           {
             path: '/users',
+            component: UserList,
+            //component: {
+            //  template: '<div>ユーザー一覧ページです。</div>'
+            //},
+            beforeEnter: function (to, from, next) {
+              if (to.query.redirect === 'true') {
+                next('/top')
+              } else {
+                next()
+              }
+            }
+          },
+          {
+            path: '/user/:userId',
+            name: 'user',
             component: {
-              template: '<div>ユーザー一覧ページです。</div>'
+              template: '<div>ユーザーIDは {{ $route.params.userId }} です。</div>'
             }
           }
         ]
       })
+
+//router.beforeEach(function (to, from, next) {
+//  if (to.path === '/users') {
+//    next('/top')
+//  } else {
+//    next()
+//  }
+//})
 
 var app = new Vue({
   router: router
